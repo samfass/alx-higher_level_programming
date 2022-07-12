@@ -1,31 +1,44 @@
 #!/usr/bin/python3
-"""module for use with square class
+"""Define Rectangle Class
 """
-
 
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
-    """square class for use as an object,
-        -> inherits from rectangle,
-        -> rectangle inherits from Base
-    """
+    """Module Representation of Square
+"""
+
     def __init__(self, size, x=0, y=0, id=None):
+        """Initialization a Square
+        """
         super().__init__(size, size, x, y, id)
 
+    @property
+    def size(self):
+        """module Square size getter
+        """
+        return self.width
+
+    @size.setter
+    def size(self, value):
+        """module Square size setter
+        """
+        self.width = value
+        self.height = value
+
     def __str__(self):
-        builder = "[Square] ({}) {}/{} - {}".format(self.id,
-                                                    self.x,
-                                                    self.y,
-                                                    self.width)
-        return builder
+        """module string represation of square
+        """
+        return "[Square] ({:d}) {:d}/{:d} - {:d}".format(self.id,
+                                                         self.x,
+                                                         self.y,
+                                                         self.width)
 
     def update(self, *args, **kwargs):
-        """takes an *args argument and sets arguments respective
-            to instantiation function
+        """module update square
         """
-        if args is not None and len(args) > 0:
+        if len(args):
             for i, arg in enumerate(args):
                 if i == 0:
                     self.id = arg
@@ -35,36 +48,17 @@ class Square(Rectangle):
                     self.x = arg
                 elif i == 3:
                     self.y = arg
-        elif kwargs is not None:
-            for (key, value) in kwargs.items():
-                if key == "id":
-                    self.id = value
-                elif key == "size":
-                    self.size = value
-                elif key == "x":
-                    self.x = value
-                elif key == "y":
-                    self.y = value
+        else:
+            for key, value in kwargs.items():
+                if hasattr(self, key) is True:
+                    setattr(self, key, value)
 
     def to_dictionary(self):
-        """gets the dictionary representation of a square object
+        """retrun dictonary
         """
-        new_d = super().to_dictionary()
-        del new_d['height']
-        del new_d['width']
-        new_d['size'] = self.size
-        return new_d
-
-    def to_csv(self):
-        """returns a list containing csv representation of rectangle
-        """
-        return [self.id, self.size, self.x, self.y]
-
-    @property
-    def size(self):
-        return self.width
-
-    @size.setter
-    def size(self, value):
-        self.width = value
-        self.height = value
+        return {
+            "id": self.id,
+            "size": self.size,
+            "x": self.x,
+            "y": self.y
+        }
