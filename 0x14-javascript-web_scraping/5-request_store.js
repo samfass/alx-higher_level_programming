@@ -1,4 +1,6 @@
-t request = require('request');
+#!/usr/bin/node
+
+const request = require('request');
 const fs = require('fs');
 
 request(process.argv[2], function (_err, _res, body) {
